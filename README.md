@@ -1,14 +1,14 @@
-# Change Data Capture (CDC) in Nats JetStream
+# Change Data Capture (CDC) in NATS JetStream
 
-Пример использования Debezium с Postgres и Nats JetStream **без использования фреймворка Apache Kafka Connect**.
+Пример использования Debezium с Postgres и NATS JetStream **без использования фреймворка Apache Kafka Connect**.
 
-В данном примере используется Debezium для отслеживания изменений в базе данных Postgres и отправки их в Nats JetStream.
+В данном примере используется Debezium для отслеживания изменений в базе данных Postgres и отправки их в NATS JetStream.
 
 ## Описание
 
 Проект включает:
 • Debezium для отслеживания изменений в Postgres.
-• Nats JetStream для обработки и доставки событий.
+• NATS JetStream для обработки и доставки событий.
 • Настройка Debezium-коннектора для Postgres с базовой трансформацией данных. Конфигурация находится в
 файле [application.properties](debezium/application.properties).
 • Скрипт и API для создания тестовых данных.
@@ -45,6 +45,6 @@ curl -X POST http://localhost:8081/products
 
 1) [Debezium documentation](https://debezium.io/documentation/reference/stable/index.html)
 2) [Debezium connector for Postgres](https://debezium.io/documentation/reference/stable/connectors/postgresql.html)
-3) [Debezium Sink configuration for Nats](https://debezium.io/documentation/reference/stable/operations/debezium-server.html#_nats_jetstream)
-4) [Nats JetStream documentation](https://docs.nats.io/nats-concepts/jetstream/streams)
-5) [Nats CLI](https://docs.nats.io/using-nats/nats-tools/nats_cli)
+3) [Debezium Sink configuration for NATS](https://debezium.io/documentation/reference/stable/operations/debezium-server.html#_nats_jetstream)
+4) [NATS JetStream documentation](https://docs.nats.io/nats-concepts/jetstream/streams)
+5) [NATS CLI](https://docs.nats.io/using-nats/nats-tools/nats_cli)
