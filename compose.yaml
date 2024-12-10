@@ -1,0 +1,73 @@
+services:
+  app:
+    container_name: app
+    restart: on-failure
+    build:
+      context: .
+      target: app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+
+  consumer:
+    container_name: consumer
+    restart: on-failure
+    build:
+      context: .
+      target: consumer
+    depends_on:
+      - nats
+      - debezium
+
+  postgres:
+    container_name: postgres
+    image: postgres:17.2-alpine
+    restart: always
+    user: postgres
+    command: [ "postgres", "-c", "wal_level=logical" ]
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_DB=products
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nats:
+    container_name: nats
+    image: nats:2.10-alpine
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+    command:
+      - "--debug"
+      - "--http_port=8222"
+      - "--js"
+
+  debezium:
+    container_name: debezium
+    image: debezium/server:2.7.3.Final
+    environment:
+      - QUARKUS_LOG_CONSOLE_JSON=false
+    volumes:
+      - ./debezium/application.properties:/debezium/conf/application.properties
+    #      - ./debezium/data:/debezium/data
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  db-data:
+
